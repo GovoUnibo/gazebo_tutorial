@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- reference to your plugin -->
+    <plugin name="CableSpawner" filename="libcable.so">
+      <width>0.2</width>
+      <height>0.3</height>
+      <vertical_resolution>6</vertical_resolution>
+      <horizontal_resolution>4</horizontal_resolution>
+      <offset_x>0.5</offset_x>
+      <offset_y>0.5</offset_y>
+      <offset_z>0.5</offset_z>
+      <sphere_radius>0.02</sphere_radius>
+      <mass>0.04</mass>
+      <stiffness>50</stiffness>
+      <damping>3</damping>
+      <gravity>true</gravity>
+    </plugin>
+  </world>
+</sdf>
