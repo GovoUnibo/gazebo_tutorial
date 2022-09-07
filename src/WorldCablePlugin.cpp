@@ -24,25 +24,27 @@ void CableSpawner::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf_world)
       riseInfoMsg(CABLE_PARAM);
           
     sdf::SDF sphereSDF;
-
-      setModelName("sphere");
-      setLinkName("link");
-      setModelPose(1, 0, 0, 0, 0, 0);
-      setLinkPose(0, 0, 0.5, 0, 0, 0);
-      
-      setMass(1000);     
-      setRadius(0.5);
-        //void setMass(float mass);
     using namespace std;
 
 
-    sphereSDF.SetFromString(getSDF());
+    setModelName("sphere");
+    setModelPose(1, 0, 0, 0, 0, 0);
+    vector<float> p1{0.0, 0.0, 1.0, 0.0 ,0.0 ,0.0};
+    addLink("link_1", 2, 1, p1);
+    
+    addLink("link_2", 1, 0.5, std::vector<float>{5,0,0.5,0,0,0});
+
+    addLink("link_3", 0.1, 0.1, std::vector<float>{3,0,0.5,0,0,0});
+    
+
+    //cout << getSDF() << endl;
+     sphereSDF.SetFromString(getSDF());
 
 
-    // Demonstrate using a custom model name.
-    sdf::ElementPtr model = sphereSDF.Root()->GetElement("model");
-    model->GetAttribute("name")->SetFromString("unique_sphere");
-    _parent->InsertModelSDF(sphereSDF);
+     //Demonstrate using a custom model name.
+     sdf::ElementPtr model = sphereSDF.Root()->GetElement("model");
+     model->GetAttribute("name")->SetFromString("unique_sphere");
+     _parent->InsertModelSDF(sphereSDF);
 
         
 }
