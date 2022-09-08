@@ -10,10 +10,10 @@
 #include <geometry_msgs/Pose.h>
 #include <string>
 
-#include <sdf_builder.hpp>
+#include <sdf_sphere.hpp>
 
 using namespace gazebo;
-using namespace sdf_builder;
+using namespace sdf_sphere;
 
 
 enum _INFO_MSG_TYPE {CABLE_PARAM, PLUGIN_IS_RUNNING};

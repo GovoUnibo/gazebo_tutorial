@@ -47,7 +47,9 @@ target_link_libraries(shapes
 
 
 add_library(cable src/WorldCablePlugin.cpp  include/WorldCablePlugin.hpp
-                  src/sdf_builder.cpp       include/sdf_builder.hpp)
+                  src/sdf_builder.cpp       include/sdf_builder.hpp
+                  src/sdf_sphere.cpp       include/sdf_sphere.hpp
+                  )
 target_link_libraries(cable ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES}
 )
 

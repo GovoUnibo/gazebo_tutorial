@@ -1,9 +1,10 @@
 
 #include <WorldCablePlugin.hpp>
-
 using namespace std;
 using namespace gazebo;
+using namespace sdf_sphere;
 using namespace sdf_builder;
+
 
 CableSpawner::CableSpawner() : WorldPlugin(), SphereSdf() {}
 CableSpawner::~CableSpawner(){}
@@ -28,16 +29,20 @@ void CableSpawner::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf_world)
 
 
     setModelName("sphere");
-    setModelPose(1, 0, 0, 0, 0, 0);
-    vector<float> p1{0.0, 0.0, 1.0, 0.0 ,0.0 ,0.0};
-    addLink("link_1", 2, 1, p1);
-    
-    addLink("link_2", 1, 0.5, std::vector<float>{5,0,0.5,0,0,0});
+    setModelPose(0, 0, 0, 0, 0, 0);
 
-    addLink("link_3", 0.1, 0.1, std::vector<float>{3,0,0.5,0,0,0});
+    addLink("link_1", 2, 1, std::vector<float>{1,0,0.5,0,0,0});
+    setSelfCollide(true);
+    
+    addLink("link_2", 1, 0.5, std::vector<float>{0.2,0,0.5,0,0,0});
+    addJoint(TypeOfJoint::revolute, std::vector<int>{1,0,0});
+    setSelfCollide(true);
+    
+    addLink("link_3", 0.1, 0.1, std::vector<float>{0.9,0,0.5,0,0,0});
+    setSelfCollide(true);
     
 
-    //cout << getSDF() << endl;
+    cout << getSDF() << endl;
      sphereSDF.SetFromString(getSDF());
 
 

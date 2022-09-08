@@ -12,6 +12,9 @@
 
 namespace sdf_builder{
 
+//std::string BoolToString(bool b);
+
+
 enum ModelGeometry{sphere, box, cylinder};
 enum TypeOfJoint{fixed, revolute, prismatic, gearbox, revolute2, ball, universal, piston};
 
@@ -36,11 +39,13 @@ enum TypeOfJoint{fixed, revolute, prismatic, gearbox, revolute2, ball, universal
         std::vector<std::string> mass, object_dimension;
         std::vector<std::string> open_link, link_pose, link_name_list, joint;
         std::vector<std::string> i_xx, i_xy, i_xz, i_yy, i_yz, i_zz;
+        std::vector<std::string> mu1, mu2, fdir1, slip1, slip2;
+        std::vector<std::string> self_collision;
 
         ModelGeometry model_type;
 
         std::string getGeometry(int index_geometry); //usato per prendere sdf della collision e visual uguali
-
+        std::string getFriction(int index_collision);
 
     public:
 
@@ -49,13 +54,26 @@ enum TypeOfJoint{fixed, revolute, prismatic, gearbox, revolute2, ball, universal
         void setModelType(ModelGeometry);
         
         void setModelName(std::string model_name);
-        void setLinkName(std::string link_name);
         void setModelPose(float x, float y, float z, float roll, float pitch, float yaw);
+        
+        void setLinkName(std::string link_name);
         void setLinkPose(float x, float y, float z, float roll, float pitch, float yaw);
-        void setJoint(std::string joint_name, std::string parent, std::string child, TypeOfJoint type, std::vector<int> axis);
+
         void setMass(float mass);
         void setInertiaMomentParam(float i_xx,float i_xy,float i_xz,float i_yy,float i_yz,float i_zz);
         void setLinkDimension(std::string object_dimension);
+
+        void setSelfCollide(bool self_collide);
+
+        void setMu1(float mu1);
+        void setMu2(float mu2);
+        void setFdir1(std::vector<float> fdir1);
+        void setSlip1(float slip1);
+        void setSlip2(float slip2);
+
+
+
+        void setJoint(std::string joint_name, std::string parent, std::string child, TypeOfJoint type, std::vector<int> axis);
 
         std::string getXmlVersion();
 
@@ -74,6 +92,7 @@ enum TypeOfJoint{fixed, revolute, prismatic, gearbox, revolute2, ball, universal
         std::string getCollision(int index_link);
         std::string getVisual(int index_link);
         std::string getLinkPose(int index_link);
+        std::string getSelfCollision(int index_link);
         const bool modelHasJoint();
         const int getNumOfJoint(); 
         std::string getJoint(int index_link);
@@ -84,79 +103,6 @@ enum TypeOfJoint{fixed, revolute, prismatic, gearbox, revolute2, ball, universal
 
     };
     
-
-
-
-
-
-
-
-
-
-    
-    class SphereSdf : private SdfBuilder
-    {
-        public:
-             SphereSdf();
-            ~SphereSdf();
-
-            void setModelPose(float x, float y, float z, float roll, float pitch, float yaw);
-            void setLinkPose(float x, float y, float z, float roll, float pitch, float yaw);
-
-            void setModelName(std::string model_name);
-            void setLinkName(std::string link_name);
-            void setRadius(float radius);
-            void setMass(float mass);
-
-            void addLink(std::string link_name, float mass, float radius, std::vector<float> pose);
-
-            void addJoint(std::string parent, std::string child, TypeOfJoint type);
-            std::string getSDF();
-
-        private:
-            std::vector<float> radius;
-            std::vector<float> mass;
-            void computeInertiaMatrix(float mass, float );
-
-            void addJoint(std::string joint_name, std::string parent, std::string child, TypeOfJoint type);
-            std::string getInertial();
-            std::string _sdf;
-
-            int num_of_link=0;
-    };
-    
-
-
-
-    class BoxSdf : private SdfBuilder
-    {
-        public:
-            BoxSdf();
-            ~BoxSdf();
-
-            void setModelName(std::string model_name);
-            void setLinkName(std::string link_name);
-
-            void setModelPose(float x, float y, float z, float roll, float pitch, float yaw);
-            void setLinkPose(float x, float y, float z, float roll, float pitch, float yaw);
-        private:
-            
-    };
-
-    class CylinderSdf : private SdfBuilder
-    {
-        public: 
-            CylinderSdf();
-            ~CylinderSdf();
-
-            void setModelName(std::string model_name);
-            void setLinkName(std::string link_name);
-            
-            void setLinkPose(float x, float y, float z, float roll, float pitch, float yaw);
-        
-        private:
-            
-    };
 }
 
 
