@@ -33,13 +33,16 @@ void CableSpawner::Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf_world)
 
     addLink("link_1", 2, 1, std::vector<float>{1,0,0.5,0,0,0});
     setSelfCollide(true);
+    setMu1(0.1);
+    setMu2(0.2);
+    setTortionalFriction(0.1);
     
-    addLink("link_2", 1, 0.5, std::vector<float>{0.2,0,0.5,0,0,0});
-    addJoint(TypeOfJoint::revolute, std::vector<int>{1,0,0});
-    setSelfCollide(true);
+    //addLink("link_2", 1, 0.5, std::vector<float>{0.2,0,0.5,0,0,0});
+    //addJoint(TypeOfJoint::revolute, std::vector<int>{1,0,0});
+    //setSelfCollide(true);
     
-    addLink("link_3", 0.1, 0.1, std::vector<float>{0.9,0,0.5,0,0,0});
-    setSelfCollide(true);
+    //addLink("link_3", 0.1, 0.1, std::vector<float>{0.9,0,0.5,0,0,0});
+    //setSelfCollide(true);
     
 
     cout << getSDF() << endl;

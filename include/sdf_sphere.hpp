@@ -3,6 +3,7 @@
 
 
 #include<sdf_builder.hpp>
+#include<math.h>
 
 namespace sdf_sphere{
 
@@ -27,6 +28,7 @@ namespace sdf_sphere{
             void setFdir1(std::vector<float> fdir1);
             void setSlip1(float slip1);
             void setSlip2(float slip2);
+            void setTortionalFriction(float contact_depth=0.001);
 
             void addLink(std::string link_name, float mass, float radius, std::vector<float> pose);
 
@@ -37,9 +39,11 @@ namespace sdf_sphere{
         private:
             std::vector<float> radius;
             std::vector<float> mass;
+            std::vector<float> torsional_friction, mu1;
             void computeInertiaMatrix(float mass, float );
-
+            
             std::string getInertial();
+            std::string getTortionalFriction();
             std::string _sdf;
 
             int num_of_link=-1;

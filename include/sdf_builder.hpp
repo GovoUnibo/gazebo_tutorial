@@ -39,7 +39,7 @@ enum TypeOfJoint{fixed, revolute, prismatic, gearbox, revolute2, ball, universal
         std::vector<std::string> mass, object_dimension;
         std::vector<std::string> open_link, link_pose, link_name_list, joint;
         std::vector<std::string> i_xx, i_xy, i_xz, i_yy, i_yz, i_zz;
-        std::vector<std::string> mu1, mu2, fdir1, slip1, slip2;
+        std::vector<std::string> mu1, mu2, fdir1, slip1, slip2, tortional_friction;
         std::vector<std::string> self_collision;
 
         ModelGeometry model_type;
@@ -70,6 +70,7 @@ enum TypeOfJoint{fixed, revolute, prismatic, gearbox, revolute2, ball, universal
         void setFdir1(std::vector<float> fdir1);
         void setSlip1(float slip1);
         void setSlip2(float slip2);
+        void setTortionalFriction(float t_f);
 
 
 

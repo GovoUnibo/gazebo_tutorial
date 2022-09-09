@@ -36,12 +36,14 @@ void SdfBuilder::setLinkName(string link_name)
     this->mass.push_back("1");
     this->object_dimension.push_back("1");
     this->self_collision.push_back("false");
-
+    
     this->mu1.push_back("1"); 
     this->mu2.push_back("1");
     this->fdir1.push_back("0 0 0");
     this->slip1.push_back("0");
     this->slip2.push_back("0");
+    this->tortional_friction.push_back("-1");
+
 }
 
 void SdfBuilder::setModelType(ModelGeometry model)
@@ -136,6 +138,7 @@ void SdfBuilder::setMu2(float mu2){     this->mu2.back() = to_string(mu2);}
 void SdfBuilder::setFdir1(vector<float> fdir1){ this->fdir1.back() = to_string(fdir1[0]) + " " + to_string(fdir1[2]) + " " + to_string(fdir1[2]);}
 void SdfBuilder::setSlip1(float slip1){ this->slip1.back() = to_string(slip1);}
 void SdfBuilder::setSlip2(float slip2){ this->slip2.back() = to_string(slip2);}
+void SdfBuilder::setTortionalFriction(float t_f){this->tortional_friction.back() = to_string(t_f);}
 
 void SdfBuilder::setSelfCollide(bool self_collide){ this->self_collision.back() = BoolToString(self_collide);}
  
@@ -186,15 +189,28 @@ string SdfBuilder::getGeometry(int index_geometry=0)
 
 string SdfBuilder::getFriction(int index_collision)
 {
+    
+    string tortional;
+    if (stof(tortional_friction[index_collision])>0){
+        tortional = string("<torsional>\n")+
+                            "<coefficient>"+ this->tortional_friction[index_collision] + "</coefficient>" +
+                            "<surface_radius>" + this->object_dimension[index_collision] + "</surface_radius>" +
+                            "<use_patch_radius>false</use_patch_radius>\n"+
+                            "</torsional>\n";
+    }
+    else
+        tortional = "";
+
     return string("<surface>") +
             "<friction>" +
-            "<ode>" +
+            tortional +
+            "<ode>\n" +
             "<mu>"      + this->mu1[index_collision]    + "</mu>" +
             "<mu2>"     + this->mu2[index_collision]    + "</mu2>" +
             "<fdir1>"   + this->fdir1[index_collision]  + "</fdir1>" +
             "<slip1>"   +this->slip1[index_collision]   + "</slip1>" +
             "<slip2>"   +this->slip2[index_collision]   + "</slip2>" +
-            "</ode>"+
+            "</ode>\n"+
             "</friction>" +
             "</surface>\n";
 
@@ -203,6 +219,7 @@ string SdfBuilder::getFriction(int index_collision)
 string SdfBuilder::getCollision(int index_link=0)
 {
     return  open_collision + 
+            getFriction(index_link) +
             getGeometry(index_link) +
             close_collision;
 

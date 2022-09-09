@@ -16,8 +16,7 @@ void SphereSdf::setLinkName(std::string link_name){
     SdfBuilder::setLinkName(link_name); 
     this->mass.push_back((1));
     this->radius.push_back(1);
-    SdfBuilder::setMu1(1);
-    SdfBuilder::setMu2(1);
+    SphereSdf::setFriction(1, 1, vector<float>{0,0,0}, 0, 0);
     }
 
 void SphereSdf::setModelPose(float x=0.0, float y=0.0, float z=0.0, float roll=0.0, float pitch=0.0, float yaw=0.0)
@@ -39,29 +38,41 @@ void SphereSdf::setMass(float mass)
 
 void SphereSdf::setSelfCollide(bool self_collide){SdfBuilder::setSelfCollide(self_collide);}
 
-void SphereSdf::setMu1(float mu1){SdfBuilder::setMu1(mu1);}
+void SphereSdf::setMu1(float mu1){SdfBuilder::setMu1(mu1);this->mu1.back()= mu1;}
 void SphereSdf::setMu2(float mu2){SdfBuilder::setMu2(mu2);}
 void SphereSdf::setFdir1(vector<float> fdir1= vector<float>{0,0,0}){SdfBuilder::setFdir1(fdir1);}
 void SphereSdf::setSlip1(float slip1){SdfBuilder::setSlip1(slip1);}
 void SphereSdf::setSlip2(float slip2){SdfBuilder::setSlip2(slip2);}
 void SphereSdf::setFriction(float mu1=1, float mu2=1, std::vector<float> fdir1 = vector<float>{0,0,0}, float slip1=0, float slip2=0)
-    {
+{
+    this->mu1.push_back(mu1);
+    this->torsional_friction.push_back(0);
     SdfBuilder::setMu1(mu1);
     SdfBuilder::setMu2(mu2);
     SdfBuilder::setFdir1(fdir1);
     SdfBuilder::setSlip1(slip1);
     SdfBuilder::setSlip2(slip2);
-    }
+    SdfBuilder::setTortionalFriction(-1.0);
+}
 
+void SphereSdf::setTortionalFriction(float contact_depth)
+{
+    float N = this->mass.back()*9.81;
+    float T = (3*M_PI/16)*(sqrt(this->radius.back()*contact_depth)*this->mu1.back()*N);
+    this->torsional_friction.back() = T;
+    SdfBuilder::setTortionalFriction(T);
+
+}
 //void SphereSdf::addLink(string link_name, float mass, float radius, vector<float> pose)
 void SphereSdf::addLink(string link_name="", float mass=1, float radius=1, vector<float> pose= vector<float>{0,0,0,0,0,0})
 {
 
     SphereSdf::setLinkName(link_name);
-    //cout << num_of_link << endl;
     SphereSdf::setLinkPose(pose[0], pose[1], pose[2], pose[3], pose[4], pose[5]);
     SphereSdf::setMass(mass);
+    
     SphereSdf::setRadius(radius);
+    
 
 }
 
